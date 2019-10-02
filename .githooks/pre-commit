@@ -1,0 +1,12 @@
+#!/bin/bash -xv
+REPO_DIRECTORY=`pwd`
+REPO_SLUG=`echo ${REPO_DIRECTORY} | sed --expression 's/\///'| sed --expression='s/\//-/g'`
+WORK_TREE=/tmp/${REPO_SLUG}
+mkdir -p ${WORK_TREE}
+git --work-tree=${WORK_TREE} checkout-index -a -f
+cd ${WORK_TREE}
+cargo fmt -- --check
+CARGO_STATUS=$?
+cd ${REPO_DIRECTORY}
+rm -rf ${WORK_TREE}
+exit ${CARGO_STATUS}
